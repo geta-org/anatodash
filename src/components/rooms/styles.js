@@ -16,7 +16,6 @@ export const RoomsGeneral = styled.div`
 
 export const RoomsContainer = styled.div`
     display: flex;
-    border: 1px solid red;
     flex-direction: column;
     width: 100%;
     justify-content: flex-start;
@@ -128,14 +127,12 @@ export const IndividualRoomGeneral = styled.div`
     width: 100%;
     flex-direction: row;
     background-color: #e9e9e9;
-    border: 1px solid blue;
     border-top-left-radius: 5%;
     border-bottom-left-radius: 5%;
 `;
 
 export const IndividualCloseColumn = styled.div`
     display: flex;
-    border: 1px solid black;
     width: 6%;
     justify-content: center;
     margin: 0 0 0 2%;
@@ -143,12 +140,12 @@ export const IndividualCloseColumn = styled.div`
         height: 8%;
         width: 100%;
         object-fit: contain;
+        cursor: pointer;
     }
 `;
 
 export const IndividualRoomContainer = styled.div`
     display: flex;
-    border: 1px solid darkorchid;
     width: 100%;
     flex-direction: column;
     padding: 1%;
@@ -156,7 +153,6 @@ export const IndividualRoomContainer = styled.div`
 
 export const IndividualRoomHeader = styled.div`
     display: flex;
-    border: 1px solid darkolivegreen;
     flex-direction: column;
     width: 100%;
     h1 {
@@ -175,7 +171,6 @@ export const IndividualRoomHeader = styled.div`
 
 export const IndividualRoomBody = styled.div`
     display: flex;
-    border: 1px solid darkred;
     width: 100%;
     flex-direction: column;
     form {
@@ -203,7 +198,6 @@ export const IndividualRoomBody = styled.div`
         flex-direction: column;
         width: 99%;
         margin: 1% 0.5%;
-        border: 1px solid darkslateblue;
         color: #26418f;
         h2 {
             margin-right: 10px;
@@ -234,7 +228,6 @@ export const IndividualRoomBody = styled.div`
 export const IndividualRoomQuestionsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px solid darkslategray;
     height: 100%;
     h1 {
         font-size: 25px;
@@ -266,7 +259,6 @@ export const IndividualRoomQuestions = styled.div`
     padding: 2%;
     flex-direction: column;
     .title {
-        border: 1px solid darkslategrey;
         display: flex;
         flex-direction: row;
         width: 100%;
@@ -290,12 +282,10 @@ export const IndividualRoomQuestions = styled.div`
         }
     }
     .body {
-        border: 1px solid darkslateblue;
-        height: 100%;
+        height: 75%;
         display: flex;
         flex-direction: row;
         .optionsImage {
-            border: 1px solid darkslateblue;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -319,6 +309,50 @@ export const IndividualRoomQuestions = styled.div`
             display: flex;
             flex-direction: row;
             align-items: center;
+            height: 10%;
+        }
+        .answerGroup {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+        .alternativeGroup {
+            display: flex;
+            width: 95%;
+            height: 95%;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .alternativeContainer {
+            display: flex;
+            height: 20%;
+            margin: 1%;
+            align-items: center;
+            background-color: whitesmoke;
+            img {
+                height: 100%;
+                width: 20%;
+                cursor: pointer;
+            }
+            .rightCheck {
+                opacity: 1;
+            }
+            .wrongCheck {
+                opacity: 0.4;
+            }
+            input {
+                margin: 0 1%;
+                height: 100%;
+                width: 98%;
+                background: none;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 3px solid #c77800;
+                font-size: 15px;
+            }
         }
     }
 `;
@@ -328,7 +362,6 @@ export const ButtonsQuestions = styled.div`
     flex-direction: column;
     height: 100%;
     width: 6%;
-    border: 1px solid green;
     margin: 0 1%;
     img {
         margin: 5%;
@@ -343,13 +376,11 @@ export const ButtonsRow = styled.div`
     flex-direction: row-reverse;
     height: 70px;
     width: 100%;
-    margin: 3% 0;
-    border: 1px solid darkseagreen;
     img {
         width: 10%;
         height: 100%;
         cursor: pointer;
         object-fit: contain;
-        margin-bottom: 10%;
+        margin-bottom: 1%;
     }
 `;
