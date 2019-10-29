@@ -69,7 +69,8 @@ export const TButton = styled.button`
     cursor: pointer;
     font-size: 20px;
     &:hover {
-        background-color: #008ba3;
-        color: whitesmoke;
+        border-bottom: 2px solid #008ba3;
+        background: none;
+        color: #008ba3;
     }
 `;

@@ -22,6 +22,7 @@ import {
 } from "./styles";
 
 import Switch from "@material-ui/core/Switch";
+import Popout from "react-popout";
 
 import AddButton from "../../assets/plus.png";
 import Pencil from "../../assets/pencil.png";
@@ -29,7 +30,7 @@ import Magnifier from "../../assets/magnifier.png";
 import Check from "../../assets/check.png";
 import CheckQ from "../../assets/check-mark.png";
 import Piece from "../../assets/piece.png";
-import xMark from "../../assets/xMark.png";
+//import xMark from "../../assets/xMark.png";
 import Plus from "../../assets/plusQ.png";
 import xMarkQ from "../../assets/xMarkQ.png";
 import CloseButton from "../../assets/xMark2.png";
@@ -42,12 +43,16 @@ export default class Rooms extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            roomTitle: "31ANSD",
+            createdAt: "29-10-2019",
             isByTeacher: true,
             seconds: 0,
             imageIsUploaded: false,
             isByText: false,
+            isPending: false,
             alternatives: ["a", "b", "c", "d", null],
             answer: "",
+            isActivated: false,
             questions: [
                 {
                     id: "1",
@@ -62,7 +67,7 @@ export default class Rooms extends Component {
         };
     }
 
-    handleByTeacher = event => {
+    handleByTeacher = () => {
         const isByTeacher = this.state.isByTeacher;
         if (isByTeacher) {
             this.setState({
@@ -79,17 +84,20 @@ export default class Rooms extends Component {
         const isByText = this.state.isByText;
         if (isByText) {
             this.setState({
-                isByText: false
+                isByText: false,
+                answer: null
             });
         } else {
             this.setState({
-                isByText: true
+                isByText: true,
+                question: null
             });
         }
     };
 
     handleEditing = () => {
         const _isEditing = this.state.isEditing;
+        console.log(this.state.questions, this.state.answer);
         if (_isEditing) {
             this.setState({ isEditing: false });
         } else {
@@ -100,6 +108,12 @@ export default class Rooms extends Component {
     handleSeconds = e => {
         this.setState({
             seconds: e.target.value
+        });
+    };
+
+    handleAnswer = e => {
+        this.setState({
+            answer: e.target.value
         });
     };
 
@@ -248,6 +262,11 @@ export default class Rooms extends Component {
         );
     };
 
+    chooseImage = () => {
+        var wind = window.open("asda", "Escolha a imagem");
+        wind.closed(console.log("asda"));
+    };
+
     render() {
         return (
             <Container>
@@ -279,7 +298,11 @@ export default class Rooms extends Component {
                                     </div>
                                 </RoomProps>
                             </RoomBox>
-                            <img alt="" src={Pencil} />
+                            <img
+                                alt=""
+                                onClick={this.handleEditing}
+                                src={Pencil}
+                            />
                         </RoomWrapper>
                     </RoomsContainer>
                     <ButtonContainer>
@@ -297,14 +320,18 @@ export default class Rooms extends Component {
                         </IndividualCloseColumn>
                         <IndividualRoomContainer>
                             <IndividualRoomHeader>
-                                <h1>Sala Turma do Pagode</h1>
-                                <p>Criado em 27 de outubro de 2019</p>
+                                <h1>Sala #{this.state.roomTitle}</h1>
+                                <p>Criado em {this.state.createdAt}</p>
                             </IndividualRoomHeader>
                             <IndividualRoomBody>
-                                <form>
-                                    <h2>Nome da sala</h2>
-                                    <input placeholder="Turma do pagode" />
-                                </form>
+                                <div className="status">
+                                    <h2>Status</h2>
+                                    {this.state.isPending ? (
+                                        <p className="pending">Pendente.</p>
+                                    ) : (
+                                        <p className="done">Concluído.</p>
+                                    )}
+                                </div>
                                 <div>
                                     <h2>Encerramento</h2>
                                     <div>
@@ -319,7 +346,7 @@ export default class Rooms extends Component {
                                         <form>
                                             <input
                                                 type="text"
-                                                value={this.state.email}
+                                                value={this.state.seconds}
                                                 onChange={this.handleSeconds}
                                                 placeholder="0"
                                                 onClick={() => {
@@ -360,10 +387,11 @@ export default class Rooms extends Component {
                                                 </div>
                                             ) : (
                                                 <div className="optionsImage">
-                                                    <button>
-                                                        Suba uma foto.
-                                                    </button>
-                                                    <button>
+                                                    <button
+                                                        onClick={
+                                                            this.chooseImage
+                                                        }
+                                                    >
                                                         Escolha da biblioteca.
                                                     </button>
                                                 </div>
@@ -385,15 +413,30 @@ export default class Rooms extends Component {
                                                     <p>Texto</p>
                                                 </div>
                                                 <div className="answerGroup">
-                                                    {this.state.isByText
-                                                        ? null
-                                                        : this.alternativeBox(
-                                                              "a",
-                                                              "b",
-                                                              "c",
-                                                              "d",
-                                                              "b"
-                                                          )}
+                                                    {this.state.isByText ? (
+                                                        <form className="answerField">
+                                                            <input
+                                                                type="text"
+                                                                value={
+                                                                    this.state
+                                                                        .answer
+                                                                }
+                                                                onChange={
+                                                                    this
+                                                                        .handleAnswer
+                                                                }
+                                                                placeholder="Insira a resposta da questão"
+                                                            />
+                                                        </form>
+                                                    ) : (
+                                                        this.alternativeBox(
+                                                            "a",
+                                                            "b",
+                                                            "c",
+                                                            "d",
+                                                            "b"
+                                                        )
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -414,7 +457,7 @@ export default class Rooms extends Component {
                         </IndividualRoomContainer>
                     </IndividualRoomGeneral>
                 ) : (
-                    <IndividualRoomGeneral />
+                    <IndividualRoomGeneral style={{ background: "none" }} />
                 )}
             </Container>
         );

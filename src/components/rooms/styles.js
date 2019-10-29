@@ -173,6 +173,23 @@ export const IndividualRoomBody = styled.div`
     display: flex;
     width: 100%;
     flex-direction: column;
+    .status {
+        flex-direction: row;
+        align-items: flex-end;
+        h2 {
+            margin-right: 10px;
+            width: auto;
+        }
+        .pending {
+            color: red;
+        }
+        .done {
+            color: green;
+        }
+        p {
+            font-size: 20px;
+        }
+    }
     form {
         display: flex;
         flex-direction: row;
@@ -245,8 +262,13 @@ export const IndividualRoomQuestionsGroup = styled.div`
         font-weight: 10;
         align-self: center;
         background: none;
-        border: 1px solid whitesmoke;
+        border: none;
         margin: 0 1%;
+        opacity: 0.3;
+        :hover {
+            opacity: 1;
+            cursor: pointer;
+        }
     }
 `;
 
@@ -318,6 +340,13 @@ export const IndividualRoomQuestions = styled.div`
             align-items: center;
             justify-content: center;
         }
+        .answerField {
+            input {
+                font-size: 16px;
+                border: none;
+                border-bottom: 2px solid #ffa927;
+            }
+        }
         .alternativeGroup {
             display: flex;
             width: 95%;
@@ -330,7 +359,6 @@ export const IndividualRoomQuestions = styled.div`
             height: 20%;
             margin: 1%;
             align-items: center;
-            background-color: whitesmoke;
             img {
                 height: 100%;
                 width: 20%;
