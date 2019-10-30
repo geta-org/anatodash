@@ -26,7 +26,7 @@ export const ButtonContainer = styled.div`
     display: flex;
     width: 70px;
     flex-direction: column-reverse;
-
+    margin: 0 5px;
     img {
         cursor: pointer;
         width: 70px;
@@ -60,10 +60,18 @@ export const SearchBox = styled.form`
     }
 `;
 
-export const RoomWrapper = styled.div`
+export const RoomWrapper = styled.ul`
     display: flex;
     margin: 30px;
+    height: 95.5%;
     width: 90%;
+    flex-direction: column;
+    overflow-y: scroll;
+`;
+
+export const RoomContainer = styled.li`
+    display: flex;
+    width: 100%;
     flex-direction: row;
     height: 13%;
     align-items: center;
@@ -100,7 +108,7 @@ export const RoomProps = styled.div`
         color: #26418f;
     }
     p {
-        font-size: 14px;
+        font-size: 16px;
     }
     div {
         display: flex;
@@ -181,10 +189,10 @@ export const IndividualRoomBody = styled.div`
             width: auto;
         }
         .pending {
-            color: red;
+            color: #e67e22;
         }
         .done {
-            color: green;
+            color: #27ae60;
         }
         p {
             font-size: 20px;

@@ -7,6 +7,7 @@ import {
     ButtonContainer,
     SearchBox,
     RoomWrapper,
+    RoomContainer,
     RoomBox,
     IndividualRoomGeneral,
     RoomProps,
@@ -22,7 +23,6 @@ import {
 } from "./styles";
 
 import Switch from "@material-ui/core/Switch";
-import Popout from "react-popout";
 
 import AddButton from "../../assets/plus.png";
 import Pencil from "../../assets/pencil.png";
@@ -30,7 +30,7 @@ import Magnifier from "../../assets/magnifier.png";
 import Check from "../../assets/check.png";
 import CheckQ from "../../assets/check-mark.png";
 import Piece from "../../assets/piece.png";
-//import xMark from "../../assets/xMark.png";
+import Pending from "../../assets/pending.png";
 import Plus from "../../assets/plusQ.png";
 import xMarkQ from "../../assets/xMarkQ.png";
 import CloseButton from "../../assets/xMark2.png";
@@ -43,16 +43,32 @@ export default class Rooms extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roomTitle: "31ANSD",
-            createdAt: "29-10-2019",
+            rooms: [
+                {
+                    roomTitle: "31ANSD",
+                    createdAt: "29-10-2019",
+                    isPending: false
+                },
+                {
+                    roomTitle: "32asdas",
+                    createdAt: "29-10-2019",
+                    isPending: false
+                },
+                {
+                    roomTitle: "abacaxi",
+                    createdAt: "29-10-2019",
+                    isPending: true
+                }
+            ],
             isByTeacher: true,
             seconds: 0,
             imageIsUploaded: false,
             isByText: false,
-            isPending: false,
             alternatives: ["a", "b", "c", "d", null],
+            selectedRoom: {},
             answer: "",
             isActivated: false,
+            population: 0,
             questions: [
                 {
                     id: "1",
@@ -63,7 +79,7 @@ export default class Rooms extends Component {
                     imageIsUploaded: false
                 }
             ],
-            isEditing: true
+            isEditing: false
         };
     }
 
@@ -80,7 +96,7 @@ export default class Rooms extends Component {
         }
     };
 
-    handleByAlternative = event => {
+    handleByAlternative = () => {
         const isByText = this.state.isByText;
         if (isByText) {
             this.setState({
@@ -95,13 +111,12 @@ export default class Rooms extends Component {
         }
     };
 
-    handleEditing = () => {
+    handleEditing = room => {
         const _isEditing = this.state.isEditing;
-        console.log(this.state.questions, this.state.answer);
         if (_isEditing) {
-            this.setState({ isEditing: false });
+            this.setState({ isEditing: false, selectedRoom: null });
         } else {
-            this.setState({ isEditing: true });
+            this.setState({ isEditing: true, selectedRoom: room });
         }
     };
 
@@ -155,7 +170,41 @@ export default class Rooms extends Component {
         }
     };
 
-    alternativeBox = (alt1, alt2, alt3, alt4, rightAlt) => {
+    renderRooms = () => {
+        moment.locale("pt-BR");
+        let _formatedDate = this.state.rooms[0].createdAt;
+        console.log(_formatedDate);
+        _formatedDate = moment().format("LLL");
+        console.log(_formatedDate);
+        return this.state.rooms.map(_room => (
+            <RoomContainer key={_room.roomTitle}>
+                <RoomBox>
+                    {this.state.isPending ? (
+                        <img alt="" src={Pending} />
+                    ) : (
+                        <img alt="" src={Check} />
+                    )}
+                    <RoomProps>
+                        <h1>Sala {_room.roomTitle}</h1>
+                        <p>Criado {this.state.createdAt}</p>
+                        <div>
+                            <img alt="Alunos" src={Users} />
+                            <p>32 alunos</p>
+                            <img alt="Questões" src={Question} />
+                            <p>12 questões</p>
+                        </div>
+                    </RoomProps>
+                </RoomBox>
+                <img
+                    alt=""
+                    onClick={() => this.handleEditing(_room)}
+                    src={Pencil}
+                />
+            </RoomContainer>
+        ));
+    };
+
+    alternativeBox = (alt1, alt2, alt3, alt4) => {
         return (
             <div className="alternativeGroup">
                 <div className="alternativeContainer">
@@ -284,26 +333,7 @@ export default class Rooms extends Component {
                             <img alt="" src={Magnifier} />
                             <input placeholder="Digite o nome da sala" />
                         </SearchBox>
-                        <RoomWrapper>
-                            <RoomBox>
-                                <img alt="" src={Check} />
-                                <RoomProps>
-                                    <h1>Sala #31ANSD</h1>
-                                    <p>Criado em 20 de outubro de 2019</p>
-                                    <div>
-                                        <img alt="Alunos" src={Users} />
-                                        <p>32 alunos</p>
-                                        <img alt="Questões" src={Question} />
-                                        <p>12 questões</p>
-                                    </div>
-                                </RoomProps>
-                            </RoomBox>
-                            <img
-                                alt=""
-                                onClick={this.handleEditing}
-                                src={Pencil}
-                            />
-                        </RoomWrapper>
+                        <RoomWrapper>{this.renderRooms()}</RoomWrapper>
                     </RoomsContainer>
                     <ButtonContainer>
                         <img src={AddButton} alt="" />
@@ -320,13 +350,18 @@ export default class Rooms extends Component {
                         </IndividualCloseColumn>
                         <IndividualRoomContainer>
                             <IndividualRoomHeader>
-                                <h1>Sala #{this.state.roomTitle}</h1>
-                                <p>Criado em {this.state.createdAt}</p>
+                                <h1>
+                                    Sala #{this.state.selectedRoom.roomTitle}
+                                </h1>
+                                <p>
+                                    Criado em{" "}
+                                    {this.state.selectedRoom.createdAt}
+                                </p>
                             </IndividualRoomHeader>
                             <IndividualRoomBody>
                                 <div className="status">
                                     <h2>Status</h2>
-                                    {this.state.isPending ? (
+                                    {this.state.selectedRoom.isPending ? (
                                         <p className="pending">Pendente.</p>
                                     ) : (
                                         <p className="done">Concluído.</p>
@@ -433,8 +468,7 @@ export default class Rooms extends Component {
                                                             "a",
                                                             "b",
                                                             "c",
-                                                            "d",
-                                                            "b"
+                                                            "d"
                                                         )
                                                     )}
                                                 </div>
