@@ -1,5 +1,9 @@
+//Libs Imports
 import React, { Component } from "react";
+import { format, parseISO } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 
+//Styles
 import {
     Container,
     RoomsGeneral,
@@ -22,8 +26,10 @@ import {
     IndividualRoomQuestions
 } from "./styles";
 
+// Material UI
 import Switch from "@material-ui/core/Switch";
 
+// Images imports
 import AddButton from "../../assets/plus.png";
 import Pencil from "../../assets/pencil.png";
 import Magnifier from "../../assets/magnifier.png";
@@ -46,67 +52,110 @@ export default class Rooms extends Component {
             rooms: [
                 {
                     roomTitle: "31ANSD",
-                    createdAt: "29-10-2019",
-                    isPending: false
+                    createdAt: "2019-10-29",
+                    isPending: false,
+                    isByTime: true,
+                    isActivated: false,
+                    population: 0,
+                    seconds: 0,
+                    questions: [
+                        {
+                            id: 1,
+                            title: "",
+                            alternatives: ["a1", "b1", "c1", "d1", null],
+                            answer: "",
+                            isByText: false,
+                            imageIsUploaded: false
+                        },
+                        {
+                            id: 2,
+                            title: "",
+                            alternatives: ["a21", "ba", "c21", "d21", null],
+                            answer: "",
+                            isByText: false,
+                            imageIsUploaded: false
+                        }
+                    ]
                 },
                 {
                     roomTitle: "32asdas",
-                    createdAt: "29-10-2019",
-                    isPending: false
+                    createdAt: "2019-10-30",
+                    isPending: false,
+                    isByTime: true,
+                    isActivated: false,
+                    population: 0,
+                    seconds: 0,
+                    questions: [
+                        {
+                            id: 1,
+                            title: "",
+                            alternatives: ["a2", "b2", "c2", "d2", null],
+                            answer: "",
+                            isByText: false,
+                            imageIsUploaded: false
+                        }
+                    ]
                 },
                 {
                     roomTitle: "abacaxi",
-                    createdAt: "29-10-2019",
-                    isPending: true
+                    createdAt: "2019-10-31",
+                    isPending: true,
+                    isByTime: false,
+                    isActivated: false,
+                    population: 0,
+                    seconds: 0,
+                    questions: [
+                        {
+                            id: 1,
+                            title: "",
+                            alternatives: ["a3", "b3", "c3", "d3", null],
+                            answer: "",
+                            isByText: false,
+                            imageIsUploaded: false
+                        }
+                    ]
                 }
             ],
-            isByTeacher: true,
-            seconds: 0,
-            imageIsUploaded: false,
-            isByText: false,
-            alternatives: ["a", "b", "c", "d", null],
             selectedRoom: {},
-            answer: "",
-            isActivated: false,
-            population: 0,
-            questions: [
-                {
-                    id: "1",
-                    title: "",
-                    alternatives: [],
-                    answer: "",
-                    isByText: false,
-                    imageIsUploaded: false
-                }
-            ],
+            selectedQuestion: {},
             isEditing: false
         };
     }
 
-    handleByTeacher = () => {
-        const isByTeacher = this.state.isByTeacher;
-        if (isByTeacher) {
+    handleByTime = () => {
+        const isByTime = this.state.selectedRoom.isByTime;
+        if (isByTime) {
             this.setState({
-                isByTeacher: false
+                selectedRoom: {
+                    ...this.state.selectedRoom,
+                    isByTime: false
+                }
             });
         } else {
             this.setState({
-                isByTeacher: true
+                selectedRoom: {
+                    ...this.state.selectedRoom,
+                    isByTime: true
+                }
             });
         }
     };
 
     handleByAlternative = () => {
-        const isByText = this.state.isByText;
+        const isByText = this.state.selectedQuestion.isByText;
         if (isByText) {
             this.setState({
-                isByText: false,
-                answer: null
+                selectedQuestion: {
+                    ...this.state.selectedQuestion,
+                    isByText: false
+                }
             });
         } else {
             this.setState({
-                isByText: true,
-                question: null
+                selectedQuestion: {
+                    ...this.state.selectedQuestion,
+                    isByText: true
+                }
             });
         }
     };
@@ -114,68 +163,74 @@ export default class Rooms extends Component {
     handleEditing = room => {
         const _isEditing = this.state.isEditing;
         if (_isEditing) {
-            this.setState({ isEditing: false, selectedRoom: null });
+            this.setState({
+                isEditing: false,
+                selectedRoom: null,
+                selectedQuestion: null
+            });
         } else {
-            this.setState({ isEditing: true, selectedRoom: room });
+            this.setState({
+                isEditing: true,
+                selectedRoom: room,
+                selectedQuestion: room.questions[0]
+            });
         }
     };
 
     handleSeconds = e => {
         this.setState({
-            seconds: e.target.value
+            selectedQuestion: {
+                seconds: e.target.value
+            }
         });
     };
 
     handleAnswer = e => {
         this.setState({
-            answer: e.target.value
+            selectedQuestion: {
+                answer: e.target.value
+            }
         });
     };
 
     handleAlternative = (e, number) => {
-        const array = [...this.state.alternatives];
+        const array = [...this.state.selectedQuestion.alternatives];
         array[number] = e.target.value;
-        this.setState(
-            {
+        this.setState({
+            selectedQuestion: {
                 alternatives: array
-            },
-            () => {
-                console.log(this.state.alternatives);
             }
-        );
+        });
     };
 
     handleRightAlternative = e => {
-        const array = [...this.state.alternatives];
+        const array = [...this.state.selectedQuestion.alternatives];
         if (array[4] === array[e]) {
             array[4] = null;
-            this.setState(
-                {
+            this.setState({
+                selectedQuestion: {
                     alternatives: array
-                },
-                () => {
-                    console.log(this.state.alternatives);
                 }
-            );
+            });
         } else {
             array[4] = array[e];
-            this.setState(
-                {
+            this.setState({
+                selectedQuestion: {
                     alternatives: array
-                },
-                () => {
-                    console.log(this.state.alternatives);
                 }
-            );
+            });
         }
     };
 
+    formatDate = _day => {
+        const day = parseISO(_day);
+        const formatedDate = format(day, "dd 'de' MMMM' de 'yyyy' às 'HH:mm", {
+            locale: ptBR
+        });
+        return formatedDate;
+    };
+
     renderRooms = () => {
-        moment.locale("pt-BR");
-        let _formatedDate = this.state.rooms[0].createdAt;
-        console.log(_formatedDate);
-        _formatedDate = moment().format("LLL");
-        console.log(_formatedDate);
         return this.state.rooms.map(_room => (
             <RoomContainer key={_room.roomTitle}>
                 <RoomBox>
@@ -186,7 +241,7 @@ export default class Rooms extends Component {
                     )}
                     <RoomProps>
                         <h1>Sala {_room.roomTitle}</h1>
-                        <p>Criado {this.state.createdAt}</p>
+                        <p>Criado {this.formatDate(_room.createdAt)}</p>
                         <div>
                             <img alt="Alunos" src={Users} />
                             <p>32 alunos</p>
@@ -195,11 +250,13 @@ export default class Rooms extends Component {
                         </div>
                     </RoomProps>
                 </RoomBox>
-                <img
-                    alt=""
-                    onClick={() => this.handleEditing(_room)}
-                    src={Pencil}
-                />
+                {this.state.isEditing ? null : (
+                    <img
+                        alt=""
+                        onClick={() => this.handleEditing(_room)}
+                        src={Pencil}
+                    />
+                )}
             </RoomContainer>
         ));
     };
@@ -208,8 +265,8 @@ export default class Rooms extends Component {
         return (
             <div className="alternativeGroup">
                 <div className="alternativeContainer">
-                    {this.state.alternatives[4] ===
-                    this.state.alternatives[0] ? (
+                    {this.state.selectedQuestion.alternatives[4] ===
+                    this.state.selectedQuestion.alternatives[0] ? (
                         <img
                             onClick={() => this.handleRightAlternative(0)}
                             className="rightCheck"
@@ -227,14 +284,14 @@ export default class Rooms extends Component {
                     <p>({alt1}).</p>
                     <input
                         type="text"
-                        value={this.state.alternatives[0]}
+                        value={this.state.selectedQuestion.alternatives[0]}
                         onChange={e => this.handleAlternative(e, 0)}
                         placeholder="Digite a alternativa"
                     />
                 </div>
                 <div className="alternativeContainer">
-                    {this.state.alternatives[4] ===
-                    this.state.alternatives[1] ? (
+                    {this.state.selectedQuestion.alternatives[4] ===
+                    this.state.selectedQuestion.alternatives[1] ? (
                         <img
                             onClick={() => this.handleRightAlternative(1)}
                             className="rightCheck"
@@ -252,14 +309,14 @@ export default class Rooms extends Component {
                     <p>({alt2}).</p>
                     <input
                         type="text"
-                        value={this.state.alternatives[1]}
+                        value={this.state.selectedQuestion.alternatives[1]}
                         onChange={e => this.handleAlternative(e, 1)}
                         placeholder="Digite a alternativa"
                     />
                 </div>
                 <div className="alternativeContainer">
-                    {this.state.alternatives[4] ===
-                    this.state.alternatives[2] ? (
+                    {this.state.selectedQuestion.alternatives[4] ===
+                    this.state.selectedQuestion.alternatives[2] ? (
                         <img
                             onClick={() => this.handleRightAlternative(2)}
                             className="rightCheck"
@@ -277,14 +334,14 @@ export default class Rooms extends Component {
                     <p>({alt3}).</p>
                     <input
                         type="text"
-                        value={this.state.alternatives[2]}
+                        value={this.state.selectedQuestion.alternatives[2]}
                         onChange={e => this.handleAlternative(e, 2)}
                         placeholder="Digite a alternativa"
                     />
                 </div>
                 <div className="alternativeContainer">
-                    {this.state.alternatives[4] ===
-                    this.state.alternatives[3] ? (
+                    {this.state.selectedQuestion.alternatives[4] ===
+                    this.state.selectedQuestion.alternatives[3] ? (
                         <img
                             onClick={() => this.handleRightAlternative(3)}
                             className="rightCheck"
@@ -302,7 +359,7 @@ export default class Rooms extends Component {
                     <p>({alt4}).</p>
                     <input
                         type="text"
-                        value={this.state.alternatives[3]}
+                        value={this.state.selectedQuestion.alternatives[3]}
                         onChange={e => this.handleAlternative(e, 3)}
                         placeholder="Digite a alternativa"
                     />
@@ -313,7 +370,22 @@ export default class Rooms extends Component {
 
     chooseImage = () => {
         var wind = window.open("asda", "Escolha a imagem");
-        wind.closed(console.log("asda"));
+        if (wind.closed) {
+            console.log("buceta");
+        }
+    };
+
+    nextQuestion = () => {
+        const oldQuestion = this.state.selectedQuestion;
+        const oldQuestion_id = this.state.selectedQuestion.id;
+        const newQuestion_id = this.state.selectedQuestion.id + 1;
+        const newQuestion = this.state.selectedRoom.questions[newQuestion_id];
+        console.log(oldQuestion_id, newQuestion_id);
+        console.log(oldQuestion);
+        console.log(newQuestion);
+        /* this.setState({
+            selectedQuestion: newQuestion
+        }); */
     };
 
     render() {
@@ -355,7 +427,9 @@ export default class Rooms extends Component {
                                 </h1>
                                 <p>
                                     Criado em{" "}
-                                    {this.state.selectedRoom.createdAt}
+                                    {this.formatDate(
+                                        this.state.selectedRoom.createdAt
+                                    )}
                                 </p>
                             </IndividualRoomHeader>
                             <IndividualRoomBody>
@@ -372,24 +446,30 @@ export default class Rooms extends Component {
                                     <div>
                                         <p>Professor</p>
                                         <Switch
-                                            checked={this.state.isByTeacher}
-                                            value="isByTeacher"
+                                            checked={
+                                                this.state.selectedRoom.isByTime
+                                            }
+                                            value="isByTime"
                                             color="default"
-                                            onClick={this.handleByTeacher}
+                                            onClick={this.handleByTime}
                                         />
                                         <p>Por tempo</p>
                                         <form>
                                             <input
                                                 type="text"
-                                                value={this.state.seconds}
+                                                value={
+                                                    this.state.selectedRoom
+                                                        .seconds
+                                                }
                                                 onChange={this.handleSeconds}
                                                 placeholder="0"
                                                 onClick={() => {
                                                     if (
-                                                        !this.state.isByTeacher
+                                                        !this.state.selectedRoom
+                                                            .isByTime
                                                     ) {
                                                         this.setState({
-                                                            isByTeacher: true
+                                                            isByTime: true
                                                         });
                                                     }
                                                 }}
@@ -402,12 +482,18 @@ export default class Rooms extends Component {
                             <IndividualRoomQuestionsContainer>
                                 <h1>Questões</h1>
                                 <IndividualRoomQuestionsGroup>
-                                    <button className="questionSlider">
+                                    <button
+                                        onClick={this.previousQuestion}
+                                        className="questionSlider"
+                                    >
                                         {"<"}
                                     </button>
                                     <IndividualRoomQuestions>
                                         <div className="title">
-                                            <h1>1.</h1>
+                                            <h1>
+                                                {this.state.selectedQuestion.id}
+                                                .
+                                            </h1>
                                             <form>
                                                 <textarea
                                                     type="text"
@@ -436,7 +522,9 @@ export default class Rooms extends Component {
                                                     <p>Alternativa</p>
                                                     <Switch
                                                         checked={
-                                                            this.state.isByText
+                                                            this.state
+                                                                .selectedQuestion
+                                                                .isByText
                                                         }
                                                         value="isByText"
                                                         color="default"
@@ -448,12 +536,14 @@ export default class Rooms extends Component {
                                                     <p>Texto</p>
                                                 </div>
                                                 <div className="answerGroup">
-                                                    {this.state.isByText ? (
+                                                    {this.state.selectedQuestion
+                                                        .isByText ? (
                                                         <form className="answerField">
                                                             <input
                                                                 type="text"
                                                                 value={
                                                                     this.state
+                                                                        .selectedQuestion
                                                                         .answer
                                                                 }
                                                                 onChange={
@@ -475,7 +565,10 @@ export default class Rooms extends Component {
                                             </div>
                                         </div>
                                     </IndividualRoomQuestions>
-                                    <button className="questionSlider">
+                                    <button
+                                        onClick={this.nextQuestion}
+                                        className="questionSlider"
+                                    >
                                         {">"}
                                     </button>
                                     <ButtonsQuestions>
