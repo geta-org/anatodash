@@ -60,7 +60,7 @@ export default class Rooms extends Component {
                     seconds: 0,
                     questions: [
                         {
-                            id: 1,
+                            id: 0,
                             title: "",
                             alternatives: ["a1", "b1", "c1", "d1", null],
                             answer: "",
@@ -68,7 +68,7 @@ export default class Rooms extends Component {
                             imageIsUploaded: false
                         },
                         {
-                            id: 2,
+                            id: 1,
                             title: "",
                             alternatives: ["a21", "ba", "c21", "d21", null],
                             answer: "",
@@ -87,7 +87,7 @@ export default class Rooms extends Component {
                     seconds: 0,
                     questions: [
                         {
-                            id: 1,
+                            id: 0,
                             title: "",
                             alternatives: ["a2", "b2", "c2", "d2", null],
                             answer: "",
@@ -106,7 +106,7 @@ export default class Rooms extends Component {
                     seconds: 0,
                     questions: [
                         {
-                            id: 1,
+                            id: 0,
                             title: "",
                             alternatives: ["a3", "b3", "c3", "d3", null],
                             answer: "",
@@ -198,6 +198,7 @@ export default class Rooms extends Component {
         array[number] = e.target.value;
         this.setState({
             selectedQuestion: {
+                ...this.state.selectedQuestion,
                 alternatives: array
             }
         });
@@ -209,6 +210,7 @@ export default class Rooms extends Component {
             array[4] = null;
             this.setState({
                 selectedQuestion: {
+                    ...this.state.selectedQuestion,
                     alternatives: array
                 }
             });
@@ -216,6 +218,7 @@ export default class Rooms extends Component {
             array[4] = array[e];
             this.setState({
                 selectedQuestion: {
+                    ...this.state.selectedQuestion,
                     alternatives: array
                 }
             });
@@ -259,6 +262,84 @@ export default class Rooms extends Component {
                 )}
             </RoomContainer>
         ));
+    };
+
+    saveRoom = () => {
+        var idQuestion = this.state.selectedQuestion.id;
+        const roomToSave = this.state.selectedRoom;
+        const questionToSave = this.state.selectedQuestion;
+        roomToSave.questions[idQuestion] = questionToSave;
+
+        this.setState({
+            selectedRoom: roomToSave
+        });
+    };
+
+    deleteRoom = () => {
+        if (window.confirm("Você tem certeza que deseja deletar esta sala?")) {
+            const rooms = this.state.rooms;
+            const roomToDelete = this.state.selectedRoom;
+            console.log(rooms);
+            console.log(roomToDelete);
+            var index = rooms.indexOf(roomToDelete);
+            rooms.splice(index, 1);
+            console.log(index);
+            this.setState({
+                rooms: rooms,
+                selectedRoom: null,
+                isEditing: null
+            });
+        }
+    };
+    createQuestion = () => {
+        const emptyQuestion = {
+            id: this.state.selectedRoom.questions.length,
+            title: "",
+            alternatives: ["", "", "", "", null],
+            answer: "",
+            isByText: false,
+            imageIsUploaded: false
+        };
+        const questions = this.state.selectedRoom.questions;
+        questions.push(emptyQuestion);
+        this.setState(
+            {
+                selectedRoom: {
+                    ...this.state.selectedRoom,
+                    questions: questions
+                }
+            },
+            () => this.saveRoom
+        );
+    };
+
+    deleteQuestion = () => {
+        if (window.confirm("Você tem certeza que deseja deletar esta sala?")) {
+            const room = this.state.selectedRoom;
+            const questionToDelete = this.state.selectedQuestion;
+            console.log(room);
+            console.log(questionToDelete);
+            var index = room.questions.indexOf(questionToDelete);
+            room.questions.splice(index, 1);
+            console.log(index);
+            this.setState(
+                {
+                    selectedQuestion: room.questions[index - 1],
+                    selectedRoom: room
+                },
+                () => this.saveRoom
+            );
+        }
+    };
+
+    handleTitle = e => {
+        const question = this.state.selectedQuestion;
+        question.title = e.target.value;
+        console.log(question);
+        console.log(e.target.value);
+        this.setState({
+            selectedQuestion: question
+        });
     };
 
     alternativeBox = (alt1, alt2, alt3, alt4) => {
@@ -376,16 +457,25 @@ export default class Rooms extends Component {
     };
 
     nextQuestion = () => {
-        const oldQuestion = this.state.selectedQuestion;
-        const oldQuestion_id = this.state.selectedQuestion.id;
         const newQuestion_id = this.state.selectedQuestion.id + 1;
         const newQuestion = this.state.selectedRoom.questions[newQuestion_id];
-        console.log(oldQuestion_id, newQuestion_id);
-        console.log(oldQuestion);
-        console.log(newQuestion);
-        /* this.setState({
-            selectedQuestion: newQuestion
-        }); */
+        if (newQuestion) {
+            this.saveRoom();
+            this.setState({
+                selectedQuestion: newQuestion
+            });
+        }
+    };
+
+    previousQuestion = () => {
+        const newQuestion_id = this.state.selectedQuestion.id - 1;
+        const newQuestion = this.state.selectedRoom.questions[newQuestion_id];
+        if (newQuestion) {
+            this.saveRoom();
+            this.setState({
+                selectedQuestion: newQuestion
+            });
+        }
     };
 
     render() {
@@ -498,6 +588,12 @@ export default class Rooms extends Component {
                                                 <textarea
                                                     type="text"
                                                     placeholder="Insira o titulo da questão"
+                                                    value={
+                                                        this.state
+                                                            .selectedQuestion
+                                                            .title
+                                                    }
+                                                    onChange={this.handleTitle}
                                                 />
                                             </form>
                                         </div>
@@ -572,13 +668,29 @@ export default class Rooms extends Component {
                                         {">"}
                                     </button>
                                     <ButtonsQuestions>
-                                        <img src={Plus} alt="" />
-                                        <img src={xMarkQ} alt="" />
+                                        <img
+                                            src={Plus}
+                                            alt=""
+                                            onClick={this.createQuestion}
+                                        />
+                                        <img
+                                            src={xMarkQ}
+                                            alt=""
+                                            onClick={this.deleteQuestion}
+                                        />
                                     </ButtonsQuestions>
                                 </IndividualRoomQuestionsGroup>
                                 <ButtonsRow>
-                                    <img alt="Salvar" src={Save} />
-                                    <img alt="Deletar" src={Delete} />
+                                    <img
+                                        alt="Salvar"
+                                        src={Save}
+                                        onClick={this.saveRoom}
+                                    />
+                                    <img
+                                        alt="Deletar"
+                                        src={Delete}
+                                        onClick={this.deleteRoom}
+                                    />
                                 </ButtonsRow>
                             </IndividualRoomQuestionsContainer>
                         </IndividualRoomContainer>
