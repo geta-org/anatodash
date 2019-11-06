@@ -1,5 +1,6 @@
 //Libs Imports
 import React, { Component } from "react";
+import axios from "axios";
 
 //Styles
 import {
@@ -9,12 +10,14 @@ import {
     ButtonContainer,
     SearchBox,
     RoomWrapper
-} from "./styles";
+} from "../../styles/global";
+
+import {} from "./styles";
 
 // Images imports
 import AddButton from "../../assets/plus.png";
-import Pencil from "../../assets/pencil.png";
 import Magnifier from "../../assets/magnifier.png";
+import Pencil from "../../assets/pencil.png";
 import Piece from "../../assets/piece.png";
 import CloseButton from "../../assets/xMark2.png";
 
@@ -24,7 +27,8 @@ export default class Libraries extends Component {
         this.state = {
             themes: [
                 {
-                    themetitle: ""
+                    themetitle: "",
+                    themeHex: "#FFFFFF"
                 }
             ]
         };
@@ -36,6 +40,8 @@ export default class Libraries extends Component {
             console.log("buceta");
         }
     };
+
+    renderThemes = () => {};
 
     render() {
         return (
@@ -49,12 +55,12 @@ export default class Libraries extends Component {
                 ></div>
                 <RoomsGeneral>
                     <RoomsContainer>
-                        <h1>Bibliotecas</h1>
+                        <h1>Biblioteca</h1>
                         <SearchBox>
                             <img alt="" src={Magnifier} />
-                            <input placeholder="Digite o nome da sala" />
+                            <input placeholder="Digite o nome do tema" />
                         </SearchBox>
-                        <RoomWrapper>{this.renderRooms()}</RoomWrapper>
+                        <RoomWrapper>{this.renderThemes()}</RoomWrapper>
                     </RoomsContainer>
                     <ButtonContainer>
                         <img src={AddButton} alt="" />
