@@ -1,15 +1,16 @@
 //Libs Imports
 import React, { Component } from "react";
-import axios from "axios";
+//import axios from "axios";
+import { listTheme } from "../../services/api";
 
 //Styles
 import {
     Container,
-    RoomsGeneral,
-    RoomsContainer,
+    ListGeneral,
+    ListContainer,
     ButtonContainer,
     SearchBox,
-    RoomWrapper
+    ListWrapper
 } from "../../styles/global";
 
 import {} from "./styles";
@@ -41,7 +42,9 @@ export default class Libraries extends Component {
         }
     };
 
-    renderThemes = () => {};
+    renderThemes = () => {
+        listTheme();
+    };
 
     render() {
         return (
@@ -53,19 +56,19 @@ export default class Libraries extends Component {
                         backgroundColor: "#008BA3"
                     }}
                 ></div>
-                <RoomsGeneral>
-                    <RoomsContainer>
+                <ListGeneral style={{ width: "30%" }}>
+                    <ListContainer>
                         <h1>Biblioteca</h1>
                         <SearchBox>
                             <img alt="" src={Magnifier} />
                             <input placeholder="Digite o nome do tema" />
                         </SearchBox>
-                        <RoomWrapper>{this.renderThemes()}</RoomWrapper>
-                    </RoomsContainer>
+                        <ListWrapper>{this.renderThemes()}</ListWrapper>
+                    </ListContainer>
                     <ButtonContainer>
                         <img src={AddButton} alt="" />
                     </ButtonContainer>
-                </RoomsGeneral>
+                </ListGeneral>
             </Container>
         );
     }

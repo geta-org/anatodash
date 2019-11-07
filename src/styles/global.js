@@ -37,14 +37,14 @@ export const Container = styled.div`
     width: 100%;
 `;
 
-export const RoomsGeneral = styled.div`
+export const ListGeneral = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
     width: 60%;
 `;
 
-export const RoomsContainer = styled.div`
+export const ListContainer = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -90,7 +90,7 @@ export const SearchBox = styled.form`
     }
 `;
 
-export const RoomWrapper = styled.ul`
+export const ListWrapper = styled.ul`
     display: flex;
     margin: 30px;
     height: 95.5%;
