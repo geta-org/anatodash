@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api = axios.create({
+const api = axios.create({
     baseURL: "http://167.71.92.203/anatogame/api/",
     headers: {
         Accept: "application/json",
@@ -8,7 +8,4 @@ export const api = axios.create({
     }
 });
 
-export function listThemes() {
-    /* axios.get(); */
-    console.log("boa");
-}
+export default api;

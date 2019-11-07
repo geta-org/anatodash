@@ -1,7 +1,6 @@
 //Libs Imports
 import React, { Component } from "react";
-//import axios from "axios";
-import { listTheme } from "../../services/api";
+import api from "../../services/api";
 
 //Styles
 import {
@@ -13,7 +12,7 @@ import {
     ListWrapper
 } from "../../styles/global";
 
-import {} from "./styles";
+import { ThemeBox } from "./styles";
 
 // Images imports
 import AddButton from "../../assets/plus.png";
@@ -26,13 +25,9 @@ export default class Libraries extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            themes: [
-                {
-                    themetitle: "",
-                    themeHex: "#FFFFFF"
-                }
-            ]
+            themes: []
         };
+        this.getThemes();
     }
 
     chooseImage = () => {
@@ -42,9 +37,20 @@ export default class Libraries extends Component {
         }
     };
 
-    renderThemes = () => {
-        listTheme();
+    getThemes = async () => {
+        try {
+            const themes = await api.get("/theme");
+            this.setState({
+                themes: themes.data
+            });
+        } catch (response) {
+            console.log(response);
+        }
     };
+
+    renderThemes() {
+        //return this.state.themes.map(theme =>());
+    }
 
     render() {
         return (
@@ -63,7 +69,18 @@ export default class Libraries extends Component {
                             <img alt="" src={Magnifier} />
                             <input placeholder="Digite o nome do tema" />
                         </SearchBox>
-                        <ListWrapper>{this.renderThemes()}</ListWrapper>
+                        <ListWrapper>
+                            <ThemeBox>
+                                <div className="textBox">
+                                    <p>Peça</p>
+                                </div>
+                                <img
+                                    src={
+                                        "http://167.71.92.203/anatogame/api/files/69a2f5ff282114f465b04edda96ea28b.jpeg"
+                                    }
+                                />
+                            </ThemeBox>
+                        </ListWrapper>
                     </ListContainer>
                     <ButtonContainer>
                         <img src={AddButton} alt="" />
