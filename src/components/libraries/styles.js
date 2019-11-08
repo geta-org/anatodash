@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ThemeBox = styled.div`
-    border: 1px solid red;
+    border: 2px solid red;
     height: 100px;
     border-radius: 50px;
     width: 90%;
@@ -10,24 +10,39 @@ export const ThemeBox = styled.div`
     align-content: center;
     align-items: center;
     justify-content: center;
-    p {
-        font-size: 18px;
-        background-color: black;
-    }
-    img {
-        height: 90%;
-        width: 35%;
-        border-radius: 100%;
-    }
+    background-color: #ffffff;
     .textBox {
-        background-color: orange;
+        display: flex;
         height: 90%;
         width: 75%;
+        text-align: center;
+        align-content: center;
     }
     .imageBox {
-        background-color: orangered;
         height: 100%;
         width: 25%;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        justify-items: center;
+        justify-self: center;
+        display: flex;
+    }
+    p {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        font-size: 22px;
+        align-items: center;
+        justify-content: center;
+        color: black;
+    }
+    img {
+        height: 70px;
+        width: 70px;
+        object-fit: fill;
+        border-radius: 1000px;
+        border: none;
     }
 `;
 

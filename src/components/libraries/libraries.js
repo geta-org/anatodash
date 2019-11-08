@@ -74,11 +74,13 @@ export default class Libraries extends Component {
                                 <div className="textBox">
                                     <p>Peça</p>
                                 </div>
-                                <img
-                                    src={
-                                        "http://167.71.92.203/anatogame/api/files/69a2f5ff282114f465b04edda96ea28b.jpeg"
-                                    }
-                                />
+                                <div className="imageBox">
+                                    <img
+                                        src={
+                                            "http://167.71.92.203/anatogame/api/files/69a2f5ff282114f465b04edda96ea28b.jpeg"
+                                        }
+                                    />
+                                </div>
                             </ThemeBox>
                         </ListWrapper>
                     </ListContainer>

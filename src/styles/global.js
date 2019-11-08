@@ -24,7 +24,6 @@ body{
     text-rendering: optimizeLegibility !important;
     -webkit-smoothing: antialiased !important;
     font-family: 'Roboto', sans-serif;
-
 }
 `;
 
