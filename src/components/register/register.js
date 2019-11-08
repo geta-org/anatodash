@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import api from "../../services/api";
 import {
     Container,
     FormWrapper,
@@ -39,9 +40,26 @@ export default class Register extends Component {
         });
     };
 
+    handleSignUp = async () => {
+        try {
+            await api.post("/user", {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password
+            });
+            alert("Parabéns, você conseguiu se cadastrar no AnatoGame ;)");
+        } catch (response) {
+            alert(
+                "Infelizmente você não conseguiu se cadastrar, tente novamente mais tarde."
+            );
+            console.log(response);
+        }
+    };
+
     handleSubmit = e => {
         e.preventDefault();
         console.log(this.state);
+        this.handleSignUp();
     };
 
     render() {

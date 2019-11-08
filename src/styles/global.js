@@ -91,8 +91,8 @@ export const SearchBox = styled.form`
 
 export const ListWrapper = styled.ul`
     display: flex;
-    margin: 30px;
-    height: 95.5%;
+    margin: 10px 0 10px 0;
+    height: 100%;
     width: 90%;
     flex-direction: column;
     overflow-y: scroll;

@@ -12,7 +12,13 @@ import {
     ListWrapper
 } from "../../styles/global";
 
-import { ThemeBox } from "./styles";
+import {
+    ThemeBox,
+    ThemeContainer,
+    PiecesContainer,
+    PieceBox,
+    PiecesList
+} from "./styles";
 
 // Images imports
 import AddButton from "../../assets/plus.png";
@@ -25,7 +31,10 @@ export default class Libraries extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            themes: []
+            themes: [],
+            isAdmin: false,
+            isEditing: false,
+            isSelected: false
         };
         this.getThemes();
     }
@@ -45,12 +54,25 @@ export default class Libraries extends Component {
             });
         } catch (response) {
             console.log(response);
+        } finally {
+            console.log(this.state.themes);
         }
     };
 
     renderThemes() {
-        //return this.state.themes.map(theme =>());
+        return this.state.themes.map(theme => (
+            <ThemeBox key={theme.id} style={{ borderColor: theme.color }}>
+                <div className="textBox">
+                    <p>{theme.name}</p>
+                </div>
+                <div className="imageBox">
+                    <img alt="" src={theme.image.url} />
+                </div>
+            </ThemeBox>
+        ));
     }
+
+    createTheme() {}
 
     render() {
         return (
@@ -62,32 +84,39 @@ export default class Libraries extends Component {
                         backgroundColor: "#008BA3"
                     }}
                 ></div>
-                <ListGeneral style={{ width: "30%" }}>
+                <ListGeneral style={{ width: "50%" }}>
                     <ListContainer>
                         <h1>Biblioteca</h1>
                         <SearchBox>
                             <img alt="" src={Magnifier} />
                             <input placeholder="Digite o nome do tema" />
                         </SearchBox>
-                        <ListWrapper>
-                            <ThemeBox>
-                                <div className="textBox">
-                                    <p>Peça</p>
-                                </div>
-                                <div className="imageBox">
-                                    <img
-                                        src={
-                                            "http://167.71.92.203/anatogame/api/files/69a2f5ff282114f465b04edda96ea28b.jpeg"
-                                        }
-                                    />
-                                </div>
-                            </ThemeBox>
-                        </ListWrapper>
+                        <ListWrapper>{this.renderThemes()}</ListWrapper>
                     </ListContainer>
                     <ButtonContainer>
-                        <img src={AddButton} alt="" />
+                        {this.state.isAdmin ? (
+                            <img src={AddButton} alt="" />
+                        ) : null}
                     </ButtonContainer>
                 </ListGeneral>
+                <ThemeContainer>
+                    <div className="Button">
+                        <img alt="" src={CloseButton} />
+                    </div>
+                    <PiecesContainer>
+                        <h1>Peças</h1>
+                        <SearchBox>
+                            <img alt="" src={Magnifier} />
+                            <input placeholder="Digite o nome do tema" />
+                        </SearchBox>
+                        <PiecesList>
+                            <PieceBox>
+                                <p>Derme</p>
+                                <img alt="" src={Piece} />
+                            </PieceBox>
+                        </PiecesList>
+                    </PiecesContainer>
+                </ThemeContainer>
             </Container>
         );
     }

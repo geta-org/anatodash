@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import api from "../../services/api";
 
 import {
     Container,
@@ -34,9 +35,25 @@ export default class Login extends Component {
         });
     };
 
+    handleSignIn = async () => {
+        try {
+            const session = await api.post("/session", {
+                email: this.state.email,
+                password: this.state.password
+            });
+            localStorage.setItem("token", session.data.token);
+            alert("Parabéns, você conseguiu se cadastrar no AnatoGame ;)");
+        } catch (response) {
+            alert(
+                "Infelizmente você não conseguiu logar, tente novamente mais tarde."
+            );
+            console.log(response);
+        }
+    };
+
     handleSubmit = e => {
         e.preventDefault();
-        console.log(this.state);
+        this.handleSignIn();
     };
 
     render() {
