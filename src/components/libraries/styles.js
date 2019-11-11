@@ -1,11 +1,22 @@
 import styled from "styled-components";
 
+export const ThemeBoxContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    img {
+        width: 10%;
+        cursor: pointer;
+    }
+`;
+
 export const ThemeBox = styled.li`
     margin: 10px 0 0 0;
     border: 2px solid red;
     height: 100px;
     border-radius: 50px;
-    width: 90%;
+    width: 85%;
     display: flex;
     cursor: pointer;
     align-content: center;
@@ -81,17 +92,39 @@ export const PiecesContainer = styled.div`
         }
     }
 `;
+export const IndividualPieceContainer = styled.div`
+    background-color: #008ba3;
+    border: 1px solid orangered;
+    display: flex;
+    flex: 1;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    .Button {
+        display: flex;
+        border: 1px solid red;
+        width: 8%;
+        height: 100%;
+        justify-content: center;
+        img {
+            cursor: pointer;
+            width: 80%;
+            height: 10%;
+        }
+    }
+`;
 
-export const PiecesList = styled.div`
+export const PiecesList = styled.ul`
     border: 1px solid violet;
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     height: 100%;
     align-items: center;
+    width: 95%;
 `;
 
-export const PieceBox = styled.div`
-    width: 90%;
+export const PieceBox = styled.li`
+    width: 80%;
     height: 25%;
     display: flex;
     flex-direction: column;

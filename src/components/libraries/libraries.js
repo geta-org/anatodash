@@ -17,14 +17,15 @@ import {
     ThemeContainer,
     PiecesContainer,
     PieceBox,
-    PiecesList
+    PiecesList,
+    ThemeBoxContainer,
+    IndividualPieceContainer
 } from "./styles";
 
 // Images imports
 import AddButton from "../../assets/plus.png";
 import Magnifier from "../../assets/magnifier.png";
 import Pencil from "../../assets/pencil.png";
-import Piece from "../../assets/piece.png";
 import CloseButton from "../../assets/xMark2.png";
 
 export default class Libraries extends Component {
@@ -34,7 +35,8 @@ export default class Libraries extends Component {
             themes: [],
             isAdmin: false,
             isEditing: false,
-            isSelected: false
+            isSelected: false,
+            pieces: []
         };
         this.getThemes();
     }
@@ -61,18 +63,47 @@ export default class Libraries extends Component {
 
     renderThemes() {
         return this.state.themes.map(theme => (
-            <ThemeBox key={theme.id} style={{ borderColor: theme.color }}>
-                <div className="textBox">
-                    <p>{theme.name}</p>
-                </div>
-                <div className="imageBox">
-                    <img alt="" src={theme.image.url} />
-                </div>
-            </ThemeBox>
+            <ThemeBoxContainer key={theme.id}>
+                <ThemeBox
+                    onClick={() => this.getPiecesList(theme.id)}
+                    style={{ borderColor: theme.color }}
+                >
+                    <div className="textBox">
+                        <p>{theme.name}</p>
+                    </div>
+                    <div className="imageBox">
+                        <img alt="" src={theme.image.url} />
+                    </div>
+                </ThemeBox>
+                <img src={Pencil} />
+            </ThemeBoxContainer>
+        ));
+    }
+
+    renderPiecesList() {
+        return this.state.pieces.map(piece => (
+            <PieceBox key={piece.id}>
+                <p>{piece.name}</p>
+                <img alt="" src={piece.regular.url} />
+            </PieceBox>
         ));
     }
 
     createTheme() {}
+
+    getPiecesList = async e => {
+        try {
+            const pieces = await api.get("/theme/" + e + "/pieces");
+            console.log(pieces.data.library);
+            this.setState({
+                pieces: pieces.data.library
+            });
+        } catch (response) {
+            console.log(response);
+        } finally {
+            console.log(this.state.pieces);
+        }
+    };
 
     render() {
         return (
@@ -99,24 +130,28 @@ export default class Libraries extends Component {
                         ) : null}
                     </ButtonContainer>
                 </ListGeneral>
-                <ThemeContainer>
-                    <div className="Button">
-                        <img alt="" src={CloseButton} />
-                    </div>
-                    <PiecesContainer>
-                        <h1>Peças</h1>
-                        <SearchBox>
-                            <img alt="" src={Magnifier} />
-                            <input placeholder="Digite o nome do tema" />
-                        </SearchBox>
-                        <PiecesList>
-                            <PieceBox>
-                                <p>Derme</p>
-                                <img alt="" src={Piece} />
-                            </PieceBox>
-                        </PiecesList>
-                    </PiecesContainer>
-                </ThemeContainer>
+                {this.state.pieces.length !== 0 ? (
+                    <ThemeContainer>
+                        <div className="Button">
+                            <img alt="" src={CloseButton} />
+                        </div>
+                        <PiecesContainer>
+                            <h1>Peças</h1>
+                            <SearchBox>
+                                <img alt="" src={Magnifier} />
+                                <input placeholder="Digite o nome do tema" />
+                            </SearchBox>
+                            <PiecesList>{this.renderPiecesList()}</PiecesList>
+                        </PiecesContainer>
+                        <IndividualPieceContainer>
+                            <div className="Button">
+                                <img alt="" src={CloseButton} />
+                            </div>
+                        </IndividualPieceContainer>
+                    </ThemeContainer>
+                ) : (
+                    <ThemeContainer style={{ backgroundColor: "whitesmoke" }} />
+                )}
             </Container>
         );
     }
