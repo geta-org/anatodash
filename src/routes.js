@@ -5,7 +5,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./components/login/login";
 import Register from "./components/register/register";
 import Rooms from "./components/rooms/rooms";
-import Libraries from "./components/libraries/libraries";
+import Library from "./components/libraries/libraries";
 
 const Routes = () => (
     <BrowserRouter>
@@ -13,7 +13,7 @@ const Routes = () => (
             <Route path="/" exact component={Login} />
             <Route path="/register" exact component={Register} />
             <Route path="/rooms" exact component={Rooms} />
-            <Route path="/libraries" exact component={Libraries} />
+            <Route path="/library" exact component={Library} />
         </Switch>
     </BrowserRouter>
 );

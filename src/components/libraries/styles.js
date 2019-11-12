@@ -13,7 +13,6 @@ export const ThemeBoxContainer = styled.div`
 
 export const ThemeBox = styled.li`
     margin: 10px 0 0 0;
-    border: 2px solid red;
     height: 100px;
     border-radius: 50px;
     width: 85%;
@@ -78,7 +77,6 @@ export const ThemeContainer = styled.div`
 `;
 
 export const PiecesContainer = styled.div`
-    border: 1px solid orangered;
     height: 100%;
     width: 30%;
     display: flex;
@@ -109,6 +107,45 @@ export const IndividualPieceContainer = styled.div`
             cursor: pointer;
             width: 80%;
             height: 10%;
+        }
+    }
+`;
+
+export const PieceImagesContainer = styled.ul`
+    border: 1px solid greenyellow;
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .Name {
+        border: 1px solid blue;
+        display: flex;
+        height: 4%;
+        p {
+            color: #ffa927;
+            font-weight: bold;
+        }
+        input {
+            background: none;
+        }
+    }
+    .Images {
+        border: 1px solid salmon;
+        height: 96%;
+        img {
+            height: 100px;
+            width: 100px;
+        }
+    }
+`;
+
+export const PieceImage = styled.li`
+    .Images {
+        border: 1px solid salmon;
+        height: 96%;
+        img {
+            height: 100px;
+            width: 100px;
         }
     }
 `;

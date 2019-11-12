@@ -19,7 +19,9 @@ import {
     PieceBox,
     PiecesList,
     ThemeBoxContainer,
-    IndividualPieceContainer
+    IndividualPieceContainer,
+    PieceImagesContainer,
+    PieceImage
 } from "./styles";
 
 // Images imports
@@ -28,7 +30,7 @@ import Magnifier from "../../assets/magnifier.png";
 import Pencil from "../../assets/pencil.png";
 import CloseButton from "../../assets/xMark2.png";
 
-export default class Libraries extends Component {
+export default class Library extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -105,6 +107,23 @@ export default class Libraries extends Component {
         }
     };
 
+    renderPieceImages() {
+        return this.state.pieces.map(piece => (
+            <PieceImage key={piece.id}>
+                <div className="Name">
+                    <p>Nome da peça:</p>
+                    <input
+                        placeholder="Digite o nome da peça"
+                        value={piece.name}
+                    />
+                </div>
+                <ul className="Images">
+                    <img src={CloseButton} alt="" />
+                </ul>
+            </PieceImage>
+        ));
+    }
+
     render() {
         return (
             <Container>
@@ -147,6 +166,9 @@ export default class Libraries extends Component {
                             <div className="Button">
                                 <img alt="" src={CloseButton} />
                             </div>
+                            <PieceImagesContainer>
+                                {this.renderPieceImages()}
+                            </PieceImagesContainer>
                         </IndividualPieceContainer>
                     </ThemeContainer>
                 ) : (
