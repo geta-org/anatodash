@@ -100,7 +100,7 @@ export const IndividualPieceContainer = styled.div`
     .Button {
         display: flex;
         border: 1px solid red;
-        width: 8%;
+        width: 20%;
         height: 100%;
         justify-content: center;
         img {
@@ -120,13 +120,17 @@ export const PieceImagesContainer = styled.ul`
     .Name {
         border: 1px solid blue;
         display: flex;
-        height: 4%;
+        height: 25%;
         p {
             color: #ffa927;
             font-weight: bold;
         }
         input {
             background: none;
+            border-top: 0;
+            border-right: 0;
+            border-left: 0;
+            border-bottom: 2px solid #ffa927;
         }
     }
     .Images {

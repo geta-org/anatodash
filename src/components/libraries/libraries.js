@@ -77,7 +77,7 @@ export default class Library extends Component {
                         <img alt="" src={theme.image.url} />
                     </div>
                 </ThemeBox>
-                <img src={Pencil} />
+                <img src={Pencil} alt="" />
             </ThemeBoxContainer>
         ));
     }
