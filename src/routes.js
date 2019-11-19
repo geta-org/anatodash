@@ -6,16 +6,18 @@ import Login from "./components/login/login";
 import Register from "./components/register/register";
 import Rooms from "./components/rooms/rooms";
 import Library from "./components/libraries/libraries";
+import Admins from "./components/admins/admins";
 
 const Routes = () => (
-    <BrowserRouter>
-        <Switch>
-            <Route path="/" exact component={Login} />
-            <Route path="/register" exact component={Register} />
-            <Route path="/rooms" exact component={Rooms} />
-            <Route path="/library" exact component={Library} />
-        </Switch>
-    </BrowserRouter>
+  <BrowserRouter>
+    <Switch>
+      <Route path="/" exact component={Login} />
+      <Route path="/register" exact component={Register} />
+      <Route path="/rooms" exact component={Rooms} />
+      <Route path="/library" exact component={Library} />
+      <Route path="/admins" exact component={Admins} />
+    </Switch>
+  </BrowserRouter>
 );
 
 export default Routes;
