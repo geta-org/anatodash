@@ -5,24 +5,37 @@ export const AdminsList = styled.ul`
 `;
 
 export const AdminsObject = styled.li`
-  display: flex;
   background-color: #008ba3;
-  width: 75%;
-  height: 10%;
+  display: grid;
+  width: 70%;
+  height: 9%;
   border-radius: 50px;
+  margin-top: 3%;
+  cursor: pointer;
   p {
+    margin: 10px;
     color: white;
-  }
-  img {
-    height: 100%;
-    width: 60px;
-    background-color: red;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-self: center;
+    text-align: center;
+    font-size: 20px;
+    overflow: hidden;
+    flex-shrink: 1;
   }
 `;
 
 export const BlankContainer = styled.div`
-  background-color: #80d6e1;
-  display: flex;
+  background-color: whitesmoke;
+  display: grid;
+  grid-template-columns: 1.3fr 2fr;
   height: 100%;
   width: 100%;
+`;
+
+export const CreateContainer = styled.div`
+  display: flex;
+  background-color: #008ba3;
+  height: 30%;
+  border-radius: 50px;
 `;

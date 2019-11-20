@@ -12,14 +12,13 @@ import {
   ListWrapper
 } from "../../styles/global";
 
-import { AdminsList, AdminsObject, BlankContainer } from "./styles";
+import { AdminsObject, BlankContainer, CreateContainer } from "./styles";
 
 // Images imports
 import AddButton from "../../assets/plus.png";
 import Magnifier from "../../assets/magnifier.png";
 import Pencil from "../../assets/pencil.png";
 import CloseButton from "../../assets/xMark2.png";
-import PicExample from "../../assets/picexample.png";
 
 export default class Admins extends Component {
   constructor(props) {
@@ -27,27 +26,40 @@ export default class Admins extends Component {
     this.state = {
       admins: [],
       isAdmin: false,
-      isEditing: false,
-      isSelected: false
+      isCreating: false
     };
     this.getAdmins();
   }
 
   getAdmins = async () => {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    };
     try {
-      const { data } = await api.get("/user?role=admin");
-      console.log(data.admins);
+      const { data } = await api.get("/user?role=admin", config);
+      console.log(data);
       this.setState({
-        admins: data.admins
+        admins: data
       });
     } catch (response) {
       console.log(response);
-    } finally {
-      console.log(this.state.admins);
     }
   };
 
-  renderAdmins() {}
+  renderAdmins() {
+    return this.state.admins.map(admin => (
+      <AdminsObject key={admin.id}>
+        <p>{admin.name}</p>
+        <p style={{ fontSize: "15px" }}>{admin.email}</p>
+      </AdminsObject>
+    ));
+  }
+
+  renderCreateBox() {
+    return <CreateContainer>adasdas</CreateContainer>;
+  }
 
   render() {
     return (
@@ -66,19 +78,13 @@ export default class Admins extends Component {
               <img alt="" src={Magnifier} />
               <input placeholder="Digite o nome do usuário" />
             </SearchBox>
-            {/* <ListWrapper>{this.renderAdmins()}</ListWrapper> */}
-            <ListWrapper>
-              <AdminsObject>
-                <img alt="" src={PicExample} />
-                <p>Donquixote</p>
-              </AdminsObject>
-            </ListWrapper>
+            <ListWrapper>{this.renderAdmins()}</ListWrapper>
           </ListContainer>
           <ButtonContainer>
             <img src={AddButton} alt="" />
           </ButtonContainer>
         </ListGeneral>
-        <BlankContainer style={{ backgroundColor: "whitesmoke" }} />
+        <BlankContainer>{this.renderCreateBox()}</BlankContainer>
       </Container>
     );
   }
