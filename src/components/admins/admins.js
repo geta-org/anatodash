@@ -7,59 +7,171 @@ import {
   Container,
   ListGeneral,
   ListContainer,
-  ButtonContainer,
   SearchBox,
   ListWrapper
 } from "../../styles/global";
 
-import { AdminsObject, BlankContainer, CreateContainer } from "./styles";
+import {
+  UsersObject,
+  BlankContainer,
+  EditContainer,
+  ContainerTexts,
+  ContainerButtons
+} from "./styles";
 
 // Images imports
-import AddButton from "../../assets/plus.png";
 import Magnifier from "../../assets/magnifier.png";
-import Pencil from "../../assets/pencil.png";
 import CloseButton from "../../assets/xMark2.png";
 
 export default class Admins extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      admins: [],
+      users: [],
       isAdmin: false,
-      isCreating: false
+      selectedUser: [],
+      searchInput: ""
     };
-    this.getAdmins();
+    this.getUsers();
   }
 
-  getAdmins = async () => {
+  getUsers = async () => {
     let config = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }
     };
     try {
-      const { data } = await api.get("/user?role=admin", config);
+      const { data } = await api.get("/user", config);
       console.log(data);
       this.setState({
-        admins: data
+        users: data
       });
     } catch (response) {
       console.log(response);
     }
   };
 
-  renderAdmins() {
-    return this.state.admins.map(admin => (
-      <AdminsObject key={admin.id}>
-        <p>{admin.name}</p>
-        <p style={{ fontSize: "15px" }}>{admin.email}</p>
-      </AdminsObject>
+  renderUsers() {
+    return this.state.users.map(user => (
+      <UsersObject key={user.id} onClick={() => this.handleEdit(user)}>
+        <p>{user.name}</p>
+        <p style={{ fontSize: "15px" }}>{user.email}</p>
+      </UsersObject>
     ));
   }
 
-  renderCreateBox() {
-    return <CreateContainer>adasdas</CreateContainer>;
-  }
+  handleEdit = user => {
+    console.log(this.state.selectedUser);
+    if (this.state.selectedUser.length !== 0) {
+      this.setState({
+        selectedUser: []
+      });
+    } else {
+      this.setState({
+        selectedUser: user
+      });
+    }
+  };
+
+  handleSearch = () => {
+    let { searchInput, users } = this.state;
+    searchInput = searchInput.trim().toLowerCase();
+
+    if (searchInput.length > 0) {
+      users = users.filter(user => {
+        console.log(user.name.toLowerCase().match(searchInput));
+      });
+    }
+  };
+
+  promoteUser = async user => {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    };
+    try {
+      await api.put(
+        "/roles/" + user.id,
+        {
+          role: "admin"
+        },
+        config
+      );
+      console.log("User promoted.");
+      alert("Parabéns, você conseguiu se promover este usuário;)");
+    } catch (response) {
+      console.log(response.message);
+      alert("Infelizmente, você não conseguiu promover este usuário :(");
+    }
+  };
+
+  demoteUser = async user => {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    };
+    try {
+      await api.put(
+        "/roles/" + user.id,
+        {
+          role: "teacher"
+        },
+        config
+      );
+      alert("Parabéns, você conseguiu se rebaixar este usuário;)");
+      console.log("User demoted.");
+    } catch (response) {
+      console.log(response);
+      alert("Infelizmente, você não conseguiu rebaixar este usuário :(");
+    }
+  };
+
+  renderEditBox = user => {
+    return (
+      <EditContainer>
+        <img alt="" src={CloseButton} onClick={this.handleEdit} />
+        <ContainerTexts>
+          <div className="CreationField">
+            <p className="TextProps">E-mail</p>
+            <p className="TextData">{user.email}</p>
+          </div>
+          <div className="CreationField">
+            <p className="TextProps">Nome</p>
+            <p className="TextData">{user.name}</p>
+          </div>
+          <div className="CreationField">
+            <p className="TextProps">Papel</p>
+            <p className="TextData">
+              {user.role === "admin" ? "Administrador" : "Professor"}
+            </p>
+          </div>
+        </ContainerTexts>
+        <ContainerButtons>
+          {user.role === "admin" ? (
+            <div
+              className="Buttons"
+              style={{ backgroundColor: "#8A0101" }}
+              onClick={() => this.demoteUser(user)}
+            >
+              Rebaixar
+            </div>
+          ) : null}
+          {user.role === "teacher" ? (
+            <div
+              className="Buttons"
+              style={{ backgroundColor: "#FFA927" }}
+              onClick={() => this.promoteUser(user)}
+            >
+              Promover
+            </div>
+          ) : null}
+        </ContainerButtons>
+      </EditContainer>
+    );
+  };
 
   render() {
     return (
@@ -71,20 +183,26 @@ export default class Admins extends Component {
             backgroundColor: "#008BA3"
           }}
         ></div>
-        <ListGeneral style={{ width: "50%" }}>
+        <ListGeneral style={{ width: "40%" }}>
           <ListContainer>
             <h1>Administradores</h1>
             <SearchBox>
               <img alt="" src={Magnifier} />
-              <input placeholder="Digite o nome do usuário" />
+              <input
+                placeholder="Digite o e-mail que deseja procurar"
+                onChange={this.handleSearch}
+                value={this.state.searchInput}
+              />
             </SearchBox>
-            <ListWrapper>{this.renderAdmins()}</ListWrapper>
+            <ListWrapper>{this.renderUsers()}</ListWrapper>
           </ListContainer>
-          <ButtonContainer>
-            <img src={AddButton} alt="" />
-          </ButtonContainer>
         </ListGeneral>
-        <BlankContainer>{this.renderCreateBox()}</BlankContainer>
+        <BlankContainer>
+          {this.state.selectedUser.length !== 0
+            ? this.renderEditBox(this.state.selectedUser)
+            : null}
+        </BlankContainer>
+        <ContainerButtons></ContainerButtons>
       </Container>
     );
   }
