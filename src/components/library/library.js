@@ -38,7 +38,8 @@ export default class Library extends Component {
       isAdmin: false,
       isEditing: false,
       isSelected: false,
-      pieces: []
+      pieces: [],
+      searchInput: ""
     };
     this.getThemes();
   }
@@ -63,8 +64,26 @@ export default class Library extends Component {
     }
   };
 
+  handleSearch = e => {
+    this.setState(
+      {
+        searchInput: e.target.value
+      },
+      () => this.renderThemes(this.state.searchInput)
+    );
+  };
+
   renderThemes() {
-    return this.state.themes.map(theme => (
+    let { themes, searchInput } = this.state;
+    searchInput = searchInput.trim().toLowerCase();
+
+    if (searchInput.length > 0) {
+      themes = themes.filter(theme => {
+        return theme.name.toLowerCase().match(searchInput);
+      });
+    }
+
+    return themes.map(theme => (
       <ThemeBoxContainer key={theme.id}>
         <ThemeBox
           onClick={() => this.getPiecesList(theme.id)}
@@ -136,7 +155,11 @@ export default class Library extends Component {
             <h1>Biblioteca</h1>
             <SearchBox>
               <img alt="" src={Magnifier} />
-              <input placeholder="Digite o nome do tema" />
+              <input
+                placeholder="Digite o nome do tema"
+                onChange={this.handleSearch}
+                value={this.state.searchInput}
+              />
             </SearchBox>
             <ListWrapper>{this.renderThemes()}</ListWrapper>
           </ListContainer>

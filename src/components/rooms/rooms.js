@@ -50,41 +50,12 @@ export default class Rooms extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rooms: [
-        /*
-        {
-          roomTitle: "31ANSD",
-          createdAt: "2019-10-29",
-          isPending: false,
-          isByTime: true,
-          isActivated: false,
-          students: [],
-          seconds: 0,
-          questions: [
-            {
-              id: 0,
-              title: "",
-              alternatives: ["a1", "b1", "c1", "d1", null],
-              answer: "",
-              isByText: false,
-              imageIsUploaded: false
-            },
-            {
-              id: 1,
-              title: "",
-              alternatives: ["a21", "ba", "c21", "d21", null],
-              answer: "",
-              isByText: false,
-              imageIsUploaded: false
-            }
-          ]
-        }
-       */
-      ],
+      rooms: [],
       selectedRoom: {},
       selectedQuestion: {},
       isEditing: false,
-      isSelected: false
+      isSelected: false,
+      searchInput: ""
     };
     this.getRoomsFromApi();
   }
@@ -220,6 +191,15 @@ export default class Rooms extends Component {
     return formatedDate;
   };
 
+  handleSearch = e => {
+    this.setState(
+      {
+        searchInput: e.target.value
+      },
+      () => this.getRoomsFromApi(this.state.searchInput)
+    );
+  };
+
   getRoomsFromApi = async () => {
     try {
       const rooms = await api.get("/room", {
@@ -318,7 +298,16 @@ export default class Rooms extends Component {
   };
 
   renderRooms = () => {
-    return this.state.rooms.map(_room => (
+    let { rooms, searchInput } = this.state;
+    searchInput = searchInput.trim().toLowerCase();
+
+    if (searchInput.length > 0) {
+      rooms = rooms.filter(room => {
+        return room.code.toLowerCase().match(searchInput);
+      });
+    }
+
+    return rooms.map(_room => (
       <RoomContainer key={_room.code}>
         <RoomBox onClick={() => this.handleSelect(_room)}>
           {this.state.isPending ? (
@@ -671,7 +660,11 @@ export default class Rooms extends Component {
             <h1>Salas</h1>
             <SearchBox>
               <img alt="" src={Magnifier} />
-              <input placeholder="Digite o nome da sala" />
+              <input
+                placeholder="Digite o nome da sala"
+                onChange={this.handleSearch}
+                value={this.state.searchInput}
+              />
             </SearchBox>
             <RoomWrapper>{this.renderRooms()}</RoomWrapper>
           </RoomsContainer>

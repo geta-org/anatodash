@@ -53,7 +53,16 @@ export default class Admins extends Component {
   };
 
   renderUsers() {
-    return this.state.users.map(user => (
+    let { users, searchInput } = this.state;
+    searchInput = searchInput.trim().toLowerCase();
+
+    if (searchInput.length > 0) {
+      users = users.filter(user => {
+        return user.email.toLowerCase().match(searchInput);
+      });
+    }
+
+    return users.map(user => (
       <UsersObject key={user.id} onClick={() => this.handleEdit(user)}>
         <p>{user.name}</p>
         <p style={{ fontSize: "15px" }}>{user.email}</p>
@@ -74,15 +83,13 @@ export default class Admins extends Component {
     }
   };
 
-  handleSearch = () => {
-    let { searchInput, users } = this.state;
-    searchInput = searchInput.trim().toLowerCase();
-
-    if (searchInput.length > 0) {
-      users = users.filter(user => {
-        console.log(user.name.toLowerCase().match(searchInput));
-      });
-    }
+  handleSearch = e => {
+    this.setState(
+      {
+        searchInput: e.target.value
+      },
+      () => this.renderUsers(this.state.searchInput)
+    );
   };
 
   promoteUser = async user => {
@@ -194,7 +201,7 @@ export default class Admins extends Component {
                 value={this.state.searchInput}
               />
             </SearchBox>
-            <ListWrapper>{this.renderUsers()}</ListWrapper>
+            <ListWrapper>{this.renderUsers(null)}</ListWrapper>
           </ListContainer>
         </ListGeneral>
         <BlankContainer>
