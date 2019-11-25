@@ -4,7 +4,7 @@ export const GeneralContainer = styled.div`
   display: grid;
   width: 100%;
   height: 100%;
-  grid-template-rows: 2fr 1fr;
+  grid-template-rows: 3fr 1fr;
   border: 1px solid blueviolet;
   justify-items: center;
 `;
@@ -36,6 +36,7 @@ export const ProfileContainer = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 1000px;
+    margin-bottom: 3%;
     p {
       color: white;
       text-align: center;
@@ -44,20 +45,64 @@ export const ProfileContainer = styled.div`
 `;
 
 export const ChangeContainer = styled.div`
-  display: grid;
+  display: flex;
   border: 1px solid darkgoldenrod;
-  width: 35%;
+  width: 30%;
+  height: 90%;
   background-color: #008ba3;
   grid-template-rows: 1fr 3fr 1fr;
+  border-radius: 50px;
   img {
-    height: 10%;
+    margin: 2%;
+    height: 15%;
+    width: 8%;
+    border: 1px solid aquamarine;
+    cursor: pointer;
   }
   .inputFields {
+    display: flex;
+    flex-direction: column;
     width: 95%;
     border: 1px solid salmon;
+    padding: 10%;
+  }
+  .individualField {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   .button {
     background-color: white;
-    color: #008ba3;
+    width: 30%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1000px;
+    margin-bottom: 3%;
+    align-self: center;
+    cursor: pointer;
+    p {
+      color: #008ba3;
+      text-align: center;
+      font-size: 23px;
+    }
+  }
+  p {
+    color: #ffa927;
+    font-weight: bolder;
+    font-size: 18px;
+  }
+  input {
+    background: none;
+    border: none;
+    border-bottom: 2px solid #ffa927;
+    color: white;
+    width: 60%;
+    font-size: 16px;
+    margin-bottom: 5%;
+    ::placeholder {
+      color: white;
+    }
   }
 `;

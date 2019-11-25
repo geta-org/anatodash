@@ -40,8 +40,19 @@ export default class Profile extends Component {
           </ProfileContainer>
           <ChangeContainer>
             <img alt="" src={CloseButton} onClick={this.handleChange} />
-            <div className="inputFields"></div>
-            <div className="button"></div>
+            <div className="inputFields">
+              <div className="individualField">
+                <p>Senha antiga</p>
+                <input placeholder="Digite a senha antiga" />
+              </div>
+              <div className="individualField">
+                <p>Senha nova</p>
+                <input placeholder="Digite a senha nova" />
+              </div>
+              <div className="button">
+                <p>Mudar</p>
+              </div>
+            </div>
           </ChangeContainer>
         </GeneralContainer>
       </Container>
