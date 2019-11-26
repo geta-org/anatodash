@@ -43,6 +43,8 @@ export default class Login extends Component {
       });
       localStorage.setItem("token", session.data.token);
       localStorage.setItem("user_id", session.data.user.id);
+      localStorage.setItem("user_email", session.data.user.email);
+      localStorage.setItem("user_name", session.data.user.name);
       alert("Parabéns, você conseguiu se cadastrar no AnatoGame ;)");
       this.props.history.push("/rooms");
     } catch (response) {

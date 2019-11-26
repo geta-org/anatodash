@@ -5,14 +5,12 @@ export const GeneralContainer = styled.div`
   width: 100%;
   height: 100%;
   grid-template-rows: 3fr 1fr;
-  border: 1px solid blueviolet;
   justify-items: center;
 `;
 
 export const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
   width: 50%;
   height: 100%;
   color: #008ba3;
@@ -20,9 +18,14 @@ export const ProfileContainer = styled.div`
   align-items: center;
   .textField {
     height: 30%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    margin-bottom: 3%;
   }
   h1 {
     font-size: 120%;
+    margin-top: 5%;
   }
   h2 {
     font-size: 100%;
@@ -37,6 +40,7 @@ export const ProfileContainer = styled.div`
     align-items: center;
     border-radius: 1000px;
     margin-bottom: 3%;
+    cursor: pointer;
     p {
       color: white;
       text-align: center;
@@ -46,7 +50,6 @@ export const ProfileContainer = styled.div`
 
 export const ChangeContainer = styled.div`
   display: flex;
-  border: 1px solid darkgoldenrod;
   width: 30%;
   height: 90%;
   background-color: #008ba3;
@@ -56,14 +59,12 @@ export const ChangeContainer = styled.div`
     margin: 2%;
     height: 15%;
     width: 8%;
-    border: 1px solid aquamarine;
     cursor: pointer;
   }
   .inputFields {
     display: flex;
     flex-direction: column;
     width: 95%;
-    border: 1px solid salmon;
     padding: 10%;
   }
   .individualField {
