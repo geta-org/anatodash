@@ -39,6 +39,9 @@ export default class Profile extends Component {
       }
     };
     let { oldPass, newPass } = this.state;
+    if (oldPass === "" || newPass === "") {
+      return alert("Suas senhas não podem estar vazias.");
+    }
     try {
       await api.put(
         "/user/",
@@ -50,6 +53,7 @@ export default class Profile extends Component {
       );
       console.log("Password changed.");
       alert("Parabéns, você conseguiu mudar sua senha ;)");
+      this.handleChange();
     } catch (response) {
       console.log(response.message);
       alert("Infelizmente, você não conseguiu mudar sua senha");

@@ -62,12 +62,27 @@ export default class Admins extends Component {
       });
     }
 
-    return users.map(user => (
-      <UsersObject key={user.id} onClick={() => this.handleEdit(user)}>
-        <p>{user.name}</p>
-        <p style={{ fontSize: "15px" }}>{user.email}</p>
-      </UsersObject>
-    ));
+    return users.map(user => {
+      if (user.role === "admin") {
+        return (
+          <UsersObject
+            style={{ backgroundColor: "#FFA927" }}
+            key={user.id}
+            onClick={() => this.handleEdit(user)}
+          >
+            <p>{user.name}</p>
+            <p style={{ fontSize: "15px" }}>{user.email}</p>
+          </UsersObject>
+        );
+      } else {
+        return (
+          <UsersObject key={user.id} onClick={() => this.handleEdit(user)}>
+            <p>{user.name}</p>
+            <p style={{ fontSize: "15px" }}>{user.email}</p>
+          </UsersObject>
+        );
+      }
+    });
   }
 
   handleEdit = user => {
@@ -108,6 +123,7 @@ export default class Admins extends Component {
       );
       console.log("User promoted.");
       alert("Parabéns, você conseguiu se promover este usuário;)");
+      window.location.reload(false);
     } catch (response) {
       console.log(response.message);
       alert("Infelizmente, você não conseguiu promover este usuário :(");
@@ -130,6 +146,7 @@ export default class Admins extends Component {
       );
       alert("Parabéns, você conseguiu se rebaixar este usuário;)");
       console.log("User demoted.");
+      window.location.reload(false);
     } catch (response) {
       console.log(response);
       alert("Infelizmente, você não conseguiu rebaixar este usuário :(");
